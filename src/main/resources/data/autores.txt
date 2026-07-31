@@ -1,0 +1,4 @@
+1;Machado de Assis;Brasileiro;1839
+2;Clarice Lispector;Brasileira;1920
+3;Paulo Coelho;Brasileiro;1947
+4;Jorge Amado;Brasileiro;1912

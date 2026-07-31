@@ -1,0 +1,4 @@
+1;Companhia das Letras;São Paulo;contato@companhiadasletras.com.br;true
+2;Record;Rio de Janeiro;vendas@record.com.br;true
+3;Rocco;Rio de Janeiro;info@rocco.com.br;true
+5;Aleph;São Paulo;contato@aleph.com.br;false

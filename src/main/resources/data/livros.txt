@@ -1,0 +1,5 @@
+1;Dom Casmurro;978-8535905571;45.90;1;2;true;1
+2;A Hora da Estrela;978-8526018395;38.50;2;1;true;1
+3;O Alquimista;978-8504006032;52.00;3;3;true;2
+4;Capitães da Areia;978-8535914924;59.90;4;1;false;1
+5;Memórias Póstumas de Brás Cubas;978-8526004565;48.75;1;2;true;3

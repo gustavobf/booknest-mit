@@ -1,0 +1,4 @@
+1;Ficção;Narrativas de ficção literária
+2;Romance;Romances clássicos e contemporâneos
+3;Aventura;Histórias de aventura e ação
+4;Poesia;Obras poéticas em geral
