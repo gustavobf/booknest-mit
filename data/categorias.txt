@@ -1,4 +1,0 @@
-1;Ficção;Narrativas de ficção literária;3.5;true
-2;Romance;Romances clássicos e contemporâneos;2.8;true
-3;Aventura;Histórias de aventura e ação;4.2;true
-4;Poesia;Obras poéticas em geral;1.5;false

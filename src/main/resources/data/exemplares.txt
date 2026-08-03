@@ -1,0 +1,8 @@
+1;DOM-001;Bom;true;1
+2;DOM-002;Regular;true;1
+3;EST-001;Bom;false;2
+4;ALQ-001;Excelente;true;3
+5;CAP-001;Regular;false;4
+6;MEM-001;Bom;true;5
+7;EST-002;Excelente;true;2
+8;ALQ-002;Bom;true;3

@@ -4,18 +4,17 @@ import java.time.LocalDate;
 
 public class Emprestimo implements Entidade {
     private Integer id;
-    private String nomeUsuario;
+    private Usuario usuario;
     private LocalDate dataEmprestimo;
     private LocalDate dataEsperadaDevolucao;
     private LocalDate dataDevolucao;
     private Double multa;
-    private Livro livro;
+    private Exemplar exemplar;
 
     public Emprestimo() {}
 
-    public Emprestimo(Integer id, String nomeUsuario, LocalDate dataEmprestimo, LocalDate dataEsperadaDevolucao, LocalDate dataDevolucao, Double multa) {
+    public Emprestimo(Integer id, LocalDate dataEmprestimo, LocalDate dataEsperadaDevolucao, LocalDate dataDevolucao, Double multa) {
         this.id = id;
-        this.nomeUsuario = nomeUsuario;
         this.dataEmprestimo = dataEmprestimo;
         this.dataEsperadaDevolucao = dataEsperadaDevolucao;
         this.dataDevolucao = dataDevolucao;
@@ -32,15 +31,15 @@ public class Emprestimo implements Entidade {
 
     @Override
     public String getNome() {
-        return nomeUsuario;
+        return usuario != null ? usuario.getNome() : "N/A";
     }
 
-    public String getNomeUsuario() {
-        return nomeUsuario;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setNomeUsuario(String nomeUsuario) {
-        this.nomeUsuario = nomeUsuario;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     public LocalDate getDataEmprestimo() {
@@ -75,12 +74,33 @@ public class Emprestimo implements Entidade {
         this.multa = multa;
     }
 
-    public Livro getLivro() {
-        return livro;
+    public Exemplar getExemplar() {
+        return exemplar;
     }
 
-    public void setLivro(Livro livro) {
-        this.livro = livro;
+    public void setExemplar(Exemplar exemplar) {
+        this.exemplar = exemplar;
+    }
+
+    public boolean estaDevolvido() {
+        return dataDevolucao != null;
+    }
+
+    public boolean estaAtrasado() {
+        if (dataEsperadaDevolucao == null) {
+            return false;
+        }
+
+        LocalDate dataComparacao = estaDevolvido() ? dataDevolucao : LocalDate.now();
+        return dataComparacao != null && dataComparacao.isAfter(dataEsperadaDevolucao);
+    }
+
+    public void registrarDevolucao(LocalDate dataDevolucao, Double multa) {
+        this.dataDevolucao = dataDevolucao;
+        this.multa = multa;
+        if (exemplar != null) {
+            exemplar.registrarDevolucao();
+        }
     }
 
     @Override
@@ -92,12 +112,15 @@ public class Emprestimo implements Entidade {
     public String toString() {
         return "Emprestimo{" +
                 "id=" + id +
-                ", nomeUsuario='" + nomeUsuario + '\'' +
+                ", usuario='" + (usuario != null ? usuario.getNome() : "N/A") + '\'' +
                 ", dataEmprestimo=" + dataEmprestimo +
                 ", dataEsperadaDevolucao=" + dataEsperadaDevolucao +
                 ", dataDevolucao=" + dataDevolucao +
                 ", multa=" + multa +
-                ", livro=" + (livro != null ? livro.getTitulo() : "N/A") +
+                ", exemplar=" + (exemplar != null ? exemplar.getCodigo() : "N/A") +
+                ", livro=" + (exemplar != null && exemplar.getLivro() != null ? exemplar.getLivro().getTitulo() : "N/A") +
+                ", status='" + (estaDevolvido() ? "DEVOLVIDO" : "EM_ABERTO") + '\'' +
+                ", atrasado=" + estaAtrasado() +
                 '}';
     }
 }

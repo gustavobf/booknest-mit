@@ -1,4 +1,0 @@
-1;Machado de Assis;Brasileiro;1839.5;true
-2;Clarice Lispector;Brasileira;1920.75;true
-3;Paulo Coelho;Brasileiro;1947.25;true
-4;Jorge Amado;Brasileiro;1912.5;false

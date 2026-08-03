@@ -7,31 +7,18 @@ public class Livro implements Entidade {
     private Integer id;
     private String titulo;
     private String isbn;
-    private Double preco;
-    private Boolean disponivel;
     private Autor autor;
     private Categoria categoria;
     private Editora editora;
-    private List<Emprestimo> emprestimos = new ArrayList<>();
+    private final List<Exemplar> exemplares = new ArrayList<>();
+    private final List<Emprestimo> emprestimos = new ArrayList<>();
 
     public Livro() {}
 
-    public Livro(Integer id, String titulo, String isbn, Double preco, Boolean disponivel) {
+    public Livro(Integer id, String titulo, String isbn) {
         this.id = id;
         this.titulo = titulo;
         this.isbn = isbn;
-        this.preco = preco;
-        this.disponivel = disponivel;
-    }
-
-    public Livro(Integer id, String titulo, String isbn, Double preco, Boolean disponivel, Autor autor, Categoria categoria) {
-        this.id = id;
-        this.titulo = titulo;
-        this.isbn = isbn;
-        this.preco = preco;
-        this.disponivel = disponivel;
-        this.autor = autor;
-        this.categoria = categoria;
     }
 
     public Integer getId() {
@@ -63,20 +50,8 @@ public class Livro implements Entidade {
         this.isbn = isbn;
     }
 
-    public Double getPreco() {
-        return preco;
-    }
-
-    public void setPreco(Double preco) {
-        this.preco = preco;
-    }
-
     public Boolean getDisponivel() {
-        return disponivel;
-    }
-
-    public void setDisponivel(Boolean disponivel) {
-        this.disponivel = disponivel;
+        return exemplares.stream().anyMatch(Exemplar::getDisponivel);
     }
 
     public Autor getAutor() {
@@ -103,6 +78,22 @@ public class Livro implements Entidade {
         this.editora = editora;
     }
 
+    public List<Exemplar> getExemplares() {
+        return exemplares;
+    }
+
+    public void adicionarExemplar(Exemplar exemplar) {
+        exemplares.add(exemplar);
+    }
+
+    public long getQuantidadeExemplaresDisponiveis() {
+        return exemplares.stream().filter(Exemplar::getDisponivel).count();
+    }
+
+    public long getQuantidadeExemplaresEmprestados() {
+        return exemplares.size() - getQuantidadeExemplaresDisponiveis();
+    }
+
     public List<Emprestimo> getEmprestimos() {
         return emprestimos;
     }
@@ -122,12 +113,12 @@ public class Livro implements Entidade {
                 "id=" + id +
                 ", titulo='" + titulo + '\'' +
                 ", isbn='" + isbn + '\'' +
-                ", preco=" + preco +
-                ", disponivel=" + disponivel +
                 ", autor=" + (autor != null ? autor.getNome() : "N/A") +
                 ", categoria=" + (categoria != null ? categoria.getNome() : "N/A") +
                 ", editora=" + (editora != null ? editora.getNome() : "N/A") +
-                ", emprestimos=" + emprestimos.size() +
+                ", totalExemplares=" + exemplares.size() +
+                ", exemplaresDisponiveis=" + getQuantidadeExemplaresDisponiveis() +
+                ", exemplaresEmprestados=" + getQuantidadeExemplaresEmprestados() +
                 '}';
     }
 }
