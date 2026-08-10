@@ -1,7 +1,6 @@
 package br.edu.infnet.gustavo_figueiredo_api.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Categoria implements Entidade {
     private Integer id;
@@ -9,59 +8,55 @@ public class Categoria implements Entidade {
     private String descricao;
     private List<Livro> livros = new ArrayList<>();
 
-    public Categoria() {}
+    public Categoria () {
+    }
 
-    public Categoria(Integer id, String nome, String descricao) {
+    public Categoria (Integer id, String nome, String descricao) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
     }
 
-    public Integer getId() {
+    public Integer getId () {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId (Integer id) {
         this.id = id;
     }
 
     @Override
-    public String getNome() {
+    public String getNome () {
         return nome;
     }
 
-    public void setNome(String nome) {
+    public void setNome (String nome) {
         this.nome = nome;
     }
 
-    public String getDescricao() {
+    public String getDescricao () {
         return descricao;
     }
 
-    public void setDescricao(String descricao) {
+    public void setDescricao (String descricao) {
         this.descricao = descricao;
     }
 
-    public List<Livro> getLivros() {
+    public List<Livro> getLivros () {
         return livros;
     }
 
-    public void adicionarLivro(Livro livro) {
+    public void adicionarLivro (Livro livro) {
         this.livros.add(livro);
     }
 
     @Override
-    public void exibir() {
+    public void exibir () {
         System.out.println(this);
     }
 
     @Override
-    public String toString() {
-        return "Categoria{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", descricao='" + descricao + '\'' +
-                ", livros=" + livros.size() +
-                '}';
+    public String toString () {
+        return "Categoria{" + "id=" + id + ", nome='" + nome + '\'' + ", descricao='" + descricao + '\'' + ", livros=" + livros.size() + '}';
     }
 }

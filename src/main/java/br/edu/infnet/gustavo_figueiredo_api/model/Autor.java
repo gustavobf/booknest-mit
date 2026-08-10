@@ -1,7 +1,6 @@
 package br.edu.infnet.gustavo_figueiredo_api.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Autor implements Entidade {
     private Integer id;
@@ -10,69 +9,64 @@ public class Autor implements Entidade {
     private Integer anoNascimento;
     private List<Livro> livros = new ArrayList<>();
 
-    public Autor() {}
+    public Autor () {
+    }
 
-    public Autor(Integer id, String nome, String nacionalidade, Integer anoNascimento) {
+    public Autor (Integer id, String nome, String nacionalidade, Integer anoNascimento) {
         this.id = id;
         this.nome = nome;
         this.nacionalidade = nacionalidade;
         this.anoNascimento = anoNascimento;
     }
 
-    public Integer getId() {
+    public Integer getId () {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId (Integer id) {
         this.id = id;
     }
 
     @Override
-    public String getNome() {
+    public String getNome () {
         return nome;
     }
 
-    public void setNome(String nome) {
+    public void setNome (String nome) {
         this.nome = nome;
     }
 
-    public String getNacionalidade() {
+    public String getNacionalidade () {
         return nacionalidade;
     }
 
-    public void setNacionalidade(String nacionalidade) {
+    public void setNacionalidade (String nacionalidade) {
         this.nacionalidade = nacionalidade;
     }
 
-    public Integer getAnoNascimento() {
+    public Integer getAnoNascimento () {
         return anoNascimento;
     }
 
-    public void setAnoNascimento(Integer anoNascimento) {
+    public void setAnoNascimento (Integer anoNascimento) {
         this.anoNascimento = anoNascimento;
     }
 
-    public List<Livro> getLivros() {
+    public List<Livro> getLivros () {
         return livros;
     }
 
-    public void adicionarLivro(Livro livro) {
+    public void adicionarLivro (Livro livro) {
         this.livros.add(livro);
     }
 
     @Override
-    public void exibir() {
+    public void exibir () {
         System.out.println(this);
     }
 
     @Override
-    public String toString() {
-        return "Autor{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", nacionalidade='" + nacionalidade + '\'' +
-                ", anoNascimento=" + anoNascimento +
-                ", livros=" + livros.size() +
-                '}';
+    public String toString () {
+        return "Autor{" + "id=" + id + ", nome='" + nome + '\'' + ", nacionalidade='" + nacionalidade + '\'' + ", anoNascimento=" + anoNascimento + ", livros=" + livros.size() + '}';
     }
 }
