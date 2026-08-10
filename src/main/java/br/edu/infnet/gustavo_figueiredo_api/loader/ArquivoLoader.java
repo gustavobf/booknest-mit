@@ -1,29 +1,29 @@
 package br.edu.infnet.gustavo_figueiredo_api.loader;
 
 import br.edu.infnet.gustavo_figueiredo_api.model.*;
+import br.edu.infnet.gustavo_figueiredo_api.service.*;
+import org.springframework.stereotype.*;
 
 import java.io.*;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.time.*;
+import java.time.format.*;
+import java.util.*;
 
+@Component
 public class ArquivoLoader {
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-    private List<Autor> autores = new ArrayList<>();
-    private List<Categoria> categorias = new ArrayList<>();
-    private List<Editora> editoras = new ArrayList<>();
-    private List<Usuario> usuarios = new ArrayList<>();
-    private List<Livro> livros = new ArrayList<>();
-    private List<Exemplar> exemplares = new ArrayList<>();
-    private List<Emprestimo> emprestimos = new ArrayList<>();
+    private final AutorService autorService = new AutorService();
+    private final CategoriaService categoriaService = new CategoriaService();
+    private final EditoraService editoraService = new EditoraService();
+    private final UsuarioService usuarioService = new UsuarioService();
+    private final LivroService livroService = new LivroService();
+    private final ExemplarService exemplarService = new ExemplarService();
+    private final EmprestimoService emprestimoService = new EmprestimoService();
 
-    public void carregarDados(String caminhoAutores, String caminhoCategoria, String caminhoEditoras,
-                              String caminhoUsuarios, String caminhoLivros, String caminhoExemplares,
-                              String caminhoEmprestimos) {
+    public void carregarDados (String caminhoAutores, String caminhoCategoria, String caminhoEditoras,
+                               String caminhoUsuarios, String caminhoLivros, String caminhoExemplares,
+                               String caminhoEmprestimos) {
         carregarAutores(caminhoAutores);
         carregarCategorias(caminhoCategoria);
         carregarEditoras(caminhoEditoras);
@@ -33,259 +33,225 @@ public class ArquivoLoader {
         carregarEmprestimos(caminhoEmprestimos);
     }
 
-    private void carregarAutores(String caminho) {
+    private void carregarAutores (String caminho) {
         try (BufferedReader reader = new BufferedReader(new FileReader(caminho))) {
             String linha;
             while ((linha = reader.readLine()) != null) {
                 String[] partes = linha.split(";");
                 if (partes.length >= 4) {
-                    Autor autor = new Autor(
-                            Integer.parseInt(partes[0].trim()),
-                            partes[1].trim(),
-                            partes[2].trim(),
-                            Integer.parseInt(partes[3].trim())
-                    );
-                    autores.add(autor);
+                    Autor autor = new Autor(Integer.parseInt(partes[0].trim()), partes[1].trim(), partes[2].trim(),
+                            Integer.parseInt(partes[3].trim()));
+                    autorService.incluir(autor);
                 }
             }
-            System.out.println(autores.size() + " autores carregados");
         } catch (IOException e) {
-            System.err.println("Erro ao carregar autores: " + e.getMessage());
+            throw new IllegalStateException("Erro ao carregar autores: " + caminho, e);
         }
     }
 
-    private void carregarCategorias(String caminho) {
+    private void carregarCategorias (String caminho) {
         try (BufferedReader reader = new BufferedReader(new FileReader(caminho))) {
             String linha;
             while ((linha = reader.readLine()) != null) {
                 String[] partes = linha.split(";");
                 if (partes.length >= 3) {
-                    Categoria categoria = new Categoria(
-                            Integer.parseInt(partes[0].trim()),
-                            partes[1].trim(),
-                            partes[2].trim()
-                    );
-                    categorias.add(categoria);
+                    Categoria categoria = new Categoria(Integer.parseInt(partes[0].trim()), partes[1].trim(),
+                            partes[2].trim());
+                    categoriaService.incluir(categoria);
                 }
             }
-            System.out.println(categorias.size() + " categorias carregadas");
         } catch (IOException e) {
-            System.err.println("Erro ao carregar categorias: " + e.getMessage());
+            throw new IllegalStateException("Erro ao carregar categorias: " + caminho, e);
         }
     }
 
-    private void carregarEditoras(String caminho) {
+    private void carregarEditoras (String caminho) {
         try (BufferedReader reader = new BufferedReader(new FileReader(caminho))) {
             String linha;
             while ((linha = reader.readLine()) != null) {
                 String[] partes = linha.split(";");
                 if (partes.length >= 5) {
-                    Editora editora = new Editora(
-                            Integer.parseInt(partes[0].trim()),
-                            partes[1].trim(),
-                            partes[2].trim(),
-                            partes[3].trim(),
-                            Boolean.parseBoolean(partes[4].trim())
-                    );
-                    editoras.add(editora);
+                    Editora editora = new Editora(Integer.parseInt(partes[0].trim()), partes[1].trim(),
+                            partes[2].trim(), partes[3].trim(), Boolean.parseBoolean(partes[4].trim()));
+                    editoraService.incluir(editora);
                 }
             }
-            System.out.println(editoras.size() + " editoras carregadas");
         } catch (IOException e) {
-            System.err.println("Erro ao carregar editoras: " + e.getMessage());
+            throw new IllegalStateException("Erro ao carregar editoras: " + caminho, e);
         }
     }
 
-    private void carregarUsuarios(String caminho) {
+    private void carregarUsuarios (String caminho) {
         try (BufferedReader reader = new BufferedReader(new FileReader(caminho))) {
             String linha;
             while ((linha = reader.readLine()) != null) {
                 String[] partes = linha.split(";");
                 if (partes.length >= 5) {
-                    Usuario usuario = new Usuario(
-                            Integer.parseInt(partes[0].trim()),
-                            partes[1].trim(),
-                            partes[2].trim(),
-                            partes[3].trim(),
-                            Boolean.parseBoolean(partes[4].trim())
-                    );
-                    usuarios.add(usuario);
+                    Usuario usuario = new Usuario(Integer.parseInt(partes[0].trim()), partes[1].trim(),
+                            partes[2].trim(), partes[3].trim(), Boolean.parseBoolean(partes[4].trim()));
+                    usuarioService.incluir(usuario);
                 }
             }
-            System.out.println(usuarios.size() + " usuários carregados");
         } catch (IOException e) {
-            System.err.println("Erro ao carregar usuários: " + e.getMessage());
+            throw new IllegalStateException("Erro ao carregar usuários: " + caminho, e);
         }
     }
 
-    private void carregarLivros(String caminho) {
+    private void carregarLivros (String caminho) {
         try (BufferedReader reader = new BufferedReader(new FileReader(caminho))) {
             String linha;
             while ((linha = reader.readLine()) != null) {
                 String[] partes = linha.split(";");
                 if (partes.length >= 6) {
-                    int idAutor = Integer.parseInt(partes[3].trim());
-                    int idCategoria = Integer.parseInt(partes[4].trim());
-                    int idEditora = Integer.parseInt(partes[5].trim());
+                    Integer idAutor = Integer.parseInt(partes[3].trim());
+                    Integer idCategoria = Integer.parseInt(partes[4].trim());
+                    Integer idEditora = Integer.parseInt(partes[5].trim());
 
-                    Optional<Autor> autor = autores.stream().filter(a -> Objects.equals(a.getId(), idAutor)).findFirst();
-                    Optional<Categoria> categoria = categorias.stream().filter(c -> Objects.equals(c.getId(), idCategoria)).findFirst();
-                    Optional<Editora> editora = editoras.stream().filter(e -> Objects.equals(e.getId(), idEditora)).findFirst();
+                    Livro livro = new Livro(Integer.parseInt(partes[0].trim()), partes[1].trim(), partes[2].trim());
+                    livro.setAutor(autorService.obterPorId(idAutor));
+                    livro.setCategoria(categoriaService.obterPorId(idCategoria));
+                    livro.setEditora(editoraService.obterPorId(idEditora));
 
-                    Livro livro = new Livro(
-                            Integer.parseInt(partes[0].trim()),
-                            partes[1].trim(),
-                            partes[2].trim()
-                    );
-
-                    if (autor.isPresent()) {
-                        livro.setAutor(autor.get());
-                        autor.get().adicionarLivro(livro);
-                    }
-                    if (categoria.isPresent()) {
-                        livro.setCategoria(categoria.get());
-                        categoria.get().adicionarLivro(livro);
-                    }
-                    if (editora.isPresent()) {
-                        livro.setEditora(editora.get());
-                        editora.get().adicionarLivro(livro);
-                    }
-
-                    livros.add(livro);
+                    livroService.incluir(livro);
+                    livro.getAutor().adicionarLivro(livro);
+                    livro.getCategoria().adicionarLivro(livro);
+                    livro.getEditora().adicionarLivro(livro);
                 }
             }
-            System.out.println(livros.size() + " livros carregados");
         } catch (IOException e) {
-            System.err.println("Erro ao carregar livros: " + e.getMessage());
+            throw new IllegalStateException("Erro ao carregar livros: " + caminho, e);
         }
     }
 
-    private void carregarExemplares(String caminho) {
+    private void carregarExemplares (String caminho) {
         try (BufferedReader reader = new BufferedReader(new FileReader(caminho))) {
             String linha;
             while ((linha = reader.readLine()) != null) {
                 String[] partes = linha.split(";");
                 if (partes.length >= 5) {
-                    int idLivro = Integer.parseInt(partes[4].trim());
-                    Optional<Livro> livro = livros.stream().filter(item -> Objects.equals(item.getId(), idLivro)).findFirst();
+                    Integer idLivro = Integer.parseInt(partes[4].trim());
 
-                    Exemplar exemplar = new Exemplar(
-                            Integer.parseInt(partes[0].trim()),
-                            partes[1].trim(),
-                            EstadoConservacao.fromDescricao(partes[2].trim()),
-                            Boolean.parseBoolean(partes[3].trim())
-                    );
+                    Exemplar exemplar = new Exemplar(Integer.parseInt(partes[0].trim()), partes[1].trim(),
+                            EstadoConservacao.fromDescricao(partes[2].trim()), Boolean.parseBoolean(partes[3].trim()));
+                    exemplar.setLivro(livroService.obterPorId(idLivro));
 
-                    if (livro.isPresent()) {
-                        exemplar.setLivro(livro.get());
-                        livro.get().adicionarExemplar(exemplar);
-                    }
-
-                    exemplares.add(exemplar);
+                    exemplarService.incluir(exemplar);
+                    exemplar.getLivro().adicionarExemplar(exemplar);
                 }
             }
-            System.out.println(exemplares.size() + " exemplares carregados");
         } catch (IOException e) {
-            System.err.println("Erro ao carregar exemplares: " + e.getMessage());
+            throw new IllegalStateException("Erro ao carregar exemplares: " + caminho, e);
         }
     }
 
-    private void carregarEmprestimos(String caminho) {
+    private void carregarEmprestimos (String caminho) {
         try (BufferedReader reader = new BufferedReader(new FileReader(caminho))) {
             String linha;
             while ((linha = reader.readLine()) != null) {
                 String[] partes = linha.split(";");
                 if (partes.length >= 7) {
-                    int idUsuario = Integer.parseInt(partes[1].trim());
-                    int idExemplar = Integer.parseInt(partes[6].trim());
-                    Optional<Usuario> usuario = usuarios.stream().filter(item -> Objects.equals(item.getId(), idUsuario)).findFirst();
-                    Optional<Exemplar> exemplar = exemplares.stream().filter(item -> Objects.equals(item.getId(), idExemplar)).findFirst();
+                    Integer idUsuario = Integer.parseInt(partes[1].trim());
+                    Integer idExemplar = Integer.parseInt(partes[6].trim());
 
-                    LocalDate dataEmprestimo = LocalDate.parse(partes[2].trim(), DATE_FORMATTER);
-                    LocalDate dataEsperadaDevolucao = partes[3].isEmpty() ? null : LocalDate.parse(partes[3].trim(), DATE_FORMATTER);
-                    LocalDate dataDevolucao = partes[4].isEmpty() ? null : LocalDate.parse(partes[4].trim(), DATE_FORMATTER);
+                    Emprestimo emprestimo = new Emprestimo(Integer.parseInt(partes[0].trim()),
+                            LocalDate.parse(partes[2].trim(), DATE_FORMATTER),
+                            partes[3].isEmpty() ? null : LocalDate.parse(partes[3].trim(), DATE_FORMATTER),
+                            partes[4].isEmpty() ? null : LocalDate.parse(partes[4].trim(), DATE_FORMATTER),
+                            Double.parseDouble(partes[5].trim()));
 
-                    Emprestimo emprestimo = new Emprestimo(
-                            Integer.parseInt(partes[0].trim()),
-                            dataEmprestimo,
-                            dataEsperadaDevolucao,
-                            dataDevolucao,
-                            Double.parseDouble(partes[5].trim())
-                    );
+                    emprestimo.setUsuario(usuarioService.obterPorId(idUsuario));
+                    emprestimo.setExemplar(exemplarService.obterPorId(idExemplar));
 
-                    if (usuario.isPresent()) {
-                        emprestimo.setUsuario(usuario.get());
-                        usuario.get().adicionarEmprestimo(emprestimo);
+                    emprestimoService.incluir(emprestimo);
+                    emprestimo.getUsuario().adicionarEmprestimo(emprestimo);
+                    emprestimo.getExemplar().adicionarEmprestimo(emprestimo);
+                    emprestimo.getExemplar().getLivro().adicionarEmprestimo(emprestimo);
+                    if (emprestimo.estaDevolvido()) {
+                        emprestimo.getExemplar().registrarDevolucao();
                     }
-
-                    if (exemplar.isPresent()) {
-                        emprestimo.setExemplar(exemplar.get());
-                        exemplar.get().adicionarEmprestimo(emprestimo);
-                        if (exemplar.get().getLivro() != null) {
-                            exemplar.get().getLivro().adicionarEmprestimo(emprestimo);
-                        }
-                        if (emprestimo.estaDevolvido()) {
-                            exemplar.get().registrarDevolucao();
-                        }
-                    }
-
-                    emprestimos.add(emprestimo);
                 }
             }
-            System.out.println(emprestimos.size() + " empréstimos carregados");
         } catch (IOException e) {
-            System.err.println("Erro ao carregar empréstimos: " + e.getMessage());
+            throw new IllegalStateException("Erro ao carregar empréstimos: " + caminho, e);
         }
     }
 
-    public void exibirDados() {
+    public void exibirDados () {
         System.out.println("\n========== AUTORES ==========");
-        autores.forEach(Entidade::exibir);
+        autorService.obterLista().forEach(Entidade::exibir);
 
         System.out.println("\n========== CATEGORIAS ==========");
-        categorias.forEach(Entidade::exibir);
+        categoriaService.obterLista().forEach(Entidade::exibir);
 
         System.out.println("\n========== EDITORAS ==========");
-        editoras.forEach(Entidade::exibir);
+        editoraService.obterLista().forEach(Entidade::exibir);
 
         System.out.println("\n========== USUÁRIOS ==========");
-        usuarios.forEach(Entidade::exibir);
+        usuarioService.obterLista().forEach(Entidade::exibir);
 
         System.out.println("\n========== LIVROS ==========");
-        livros.forEach(Entidade::exibir);
+        livroService.obterLista().forEach(Entidade::exibir);
 
         System.out.println("\n========== EXEMPLARES ==========");
-        exemplares.forEach(Entidade::exibir);
+        exemplarService.obterLista().forEach(Entidade::exibir);
 
         System.out.println("\n========== HISTÓRICO DE EMPRÉSTIMOS ==========");
-        emprestimos.forEach(Entidade::exibir);
+        emprestimoService.obterLista().forEach(Entidade::exibir);
     }
 
-    public List<Autor> getAutores() {
-        return autores;
+    public List<Autor> getAutores () {
+        return autorService.obterLista();
     }
 
-    public List<Categoria> getCategorias() {
-        return categorias;
+    public List<Categoria> getCategorias () {
+        return categoriaService.obterLista();
     }
 
-    public List<Editora> getEditoras() {
-        return editoras;
+    public List<Editora> getEditoras () {
+        return editoraService.obterLista();
     }
 
-    public List<Usuario> getUsuarios() {
-        return usuarios;
+    public List<Usuario> getUsuarios () {
+        return usuarioService.obterLista();
     }
 
-    public List<Livro> getLivros() {
-        return livros;
+    public List<Livro> getLivros () {
+        return livroService.obterLista();
     }
 
-    public List<Exemplar> getExemplares() {
-        return exemplares;
+    public List<Exemplar> getExemplares () {
+        return exemplarService.obterLista();
     }
 
-    public List<Emprestimo> getEmprestimos() {
-        return emprestimos;
+    public List<Emprestimo> getEmprestimos () {
+        return emprestimoService.obterLista();
+    }
+
+    public AutorService getAutorService () {
+        return autorService;
+    }
+
+    public CategoriaService getCategoriaService () {
+        return categoriaService;
+    }
+
+    public EditoraService getEditoraService () {
+        return editoraService;
+    }
+
+    public UsuarioService getUsuarioService () {
+        return usuarioService;
+    }
+
+    public LivroService getLivroService () {
+        return livroService;
+    }
+
+    public ExemplarService getExemplarService () {
+        return exemplarService;
+    }
+
+    public EmprestimoService getEmprestimoService () {
+        return emprestimoService;
     }
 }
