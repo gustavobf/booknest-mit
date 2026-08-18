@@ -4,6 +4,13 @@ import br.edu.infnet.gustavo_figueiredo_api.model.Emprestimo;
 import br.edu.infnet.gustavo_figueiredo_api.model.Exemplar;
 import br.edu.infnet.gustavo_figueiredo_api.model.Livro;
 import br.edu.infnet.gustavo_figueiredo_api.model.Usuario;
+import br.edu.infnet.gustavo_figueiredo_api.service.AutorService;
+import br.edu.infnet.gustavo_figueiredo_api.service.CategoriaService;
+import br.edu.infnet.gustavo_figueiredo_api.service.EditoraService;
+import br.edu.infnet.gustavo_figueiredo_api.service.EmprestimoService;
+import br.edu.infnet.gustavo_figueiredo_api.service.ExemplarService;
+import br.edu.infnet.gustavo_figueiredo_api.service.LivroService;
+import br.edu.infnet.gustavo_figueiredo_api.service.UsuarioService;
 import org.junit.jupiter.api.Test;
 
 import java.net.URISyntaxException;
@@ -63,7 +70,15 @@ class ArquivoLoaderTest {
     }
 
     private ArquivoLoader criarLoader() throws URISyntaxException {
-        ArquivoLoader loader = new ArquivoLoader();
+        ArquivoLoader loader = new ArquivoLoader(
+                new AutorService(),
+                new CategoriaService(),
+                new EditoraService(),
+                new UsuarioService(),
+                new LivroService(),
+                new ExemplarService(),
+                new EmprestimoService()
+        );
         URL resourceUrl = getClass().getClassLoader().getResource("data");
         assertNotNull(resourceUrl);
 

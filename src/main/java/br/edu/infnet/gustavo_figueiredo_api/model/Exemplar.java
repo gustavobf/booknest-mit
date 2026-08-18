@@ -1,5 +1,7 @@
 package br.edu.infnet.gustavo_figueiredo_api.model;
 
+import com.fasterxml.jackson.annotation.*;
+
 import java.util.*;
 
 public class Exemplar implements Entidade {
@@ -8,6 +10,7 @@ public class Exemplar implements Entidade {
     private EstadoConservacao estadoConservacao;
     private Boolean disponivel;
     private Livro livro;
+    @JsonIgnore
     private final List<Emprestimo> emprestimos = new ArrayList<>();
 
     public Exemplar () {

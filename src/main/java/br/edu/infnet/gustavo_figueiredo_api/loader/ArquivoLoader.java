@@ -5,6 +5,7 @@ import br.edu.infnet.gustavo_figueiredo_api.service.*;
 import org.springframework.stereotype.*;
 
 import java.io.*;
+import java.net.*;
 import java.time.*;
 import java.time.format.*;
 import java.util.*;
@@ -13,13 +14,42 @@ import java.util.*;
 public class ArquivoLoader {
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-    private final AutorService autorService = new AutorService();
-    private final CategoriaService categoriaService = new CategoriaService();
-    private final EditoraService editoraService = new EditoraService();
-    private final UsuarioService usuarioService = new UsuarioService();
-    private final LivroService livroService = new LivroService();
-    private final ExemplarService exemplarService = new ExemplarService();
-    private final EmprestimoService emprestimoService = new EmprestimoService();
+    private final AutorService autorService;
+    private final CategoriaService categoriaService;
+    private final EditoraService editoraService;
+    private final UsuarioService usuarioService;
+    private final LivroService livroService;
+    private final ExemplarService exemplarService;
+    private final EmprestimoService emprestimoService;
+
+    public ArquivoLoader (AutorService autorService, CategoriaService categoriaService, EditoraService editoraService,
+                          UsuarioService usuarioService, LivroService livroService, ExemplarService exemplarService,
+                          EmprestimoService emprestimoService) {
+        this.autorService = autorService;
+        this.categoriaService = categoriaService;
+        this.editoraService = editoraService;
+        this.usuarioService = usuarioService;
+        this.livroService = livroService;
+        this.exemplarService = exemplarService;
+        this.emprestimoService = emprestimoService;
+    }
+
+    public void carregarDadosDoClasspath () {
+        URL resourceUrl = getClass().getClassLoader().getResource("data");
+        if (resourceUrl == null) {
+            throw new IllegalStateException("Diretório de recursos 'data' não encontrado.");
+        }
+
+        try {
+            File dataDir = new File(resourceUrl.toURI());
+            String baseDir = dataDir.getAbsolutePath() + File.separator;
+            carregarDados(baseDir + "autores.txt", baseDir + "categorias.txt", baseDir + "editoras.txt",
+                    baseDir + "usuarios.txt", baseDir + "livros.txt", baseDir + "exemplares.txt",
+                    baseDir + "emprestimos.txt");
+        } catch (URISyntaxException e) {
+            throw new IllegalStateException("Erro ao obter diretório de recursos.", e);
+        }
+    }
 
     public void carregarDados (String caminhoAutores, String caminhoCategoria, String caminhoEditoras,
                                String caminhoUsuarios, String caminhoLivros, String caminhoExemplares,

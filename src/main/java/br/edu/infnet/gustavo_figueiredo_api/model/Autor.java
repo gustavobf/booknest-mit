@@ -1,5 +1,7 @@
 package br.edu.infnet.gustavo_figueiredo_api.model;
 
+import com.fasterxml.jackson.annotation.*;
+
 import java.util.*;
 
 public class Autor implements Entidade {
@@ -7,6 +9,7 @@ public class Autor implements Entidade {
     private String nome;
     private String nacionalidade;
     private Integer anoNascimento;
+    @JsonIgnore
     private List<Livro> livros = new ArrayList<>();
 
     public Autor () {

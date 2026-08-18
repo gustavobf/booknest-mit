@@ -1,5 +1,7 @@
 package br.edu.infnet.gustavo_figueiredo_api.model;
 
+import com.fasterxml.jackson.annotation.*;
+
 import java.util.*;
 
 public class Usuario implements Entidade {
@@ -8,6 +10,7 @@ public class Usuario implements Entidade {
     private String email;
     private String matricula;
     private Boolean ativo;
+    @JsonIgnore
     private final List<Emprestimo> emprestimos = new ArrayList<>();
 
     public Usuario () {

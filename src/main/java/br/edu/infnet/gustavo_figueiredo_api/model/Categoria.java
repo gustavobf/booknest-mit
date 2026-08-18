@@ -1,11 +1,14 @@
 package br.edu.infnet.gustavo_figueiredo_api.model;
 
+import com.fasterxml.jackson.annotation.*;
+
 import java.util.*;
 
 public class Categoria implements Entidade {
     private Integer id;
     private String nome;
     private String descricao;
+    @JsonIgnore
     private List<Livro> livros = new ArrayList<>();
 
     public Categoria () {

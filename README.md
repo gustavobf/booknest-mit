@@ -18,10 +18,18 @@ Uma aplicação de gerenciamento de biblioteca desenvolvida com **Spring Boot**,
 ./mvnw spring-boot:run
 ```
 
+## 📘 Documentação OpenAPI / Swagger
+
+Com a aplicação em execução:
+
+- Swagger UI: `http://localhost:8080/swagger-ui/index.html`
+
 ## 🛠️ Tecnologias
 
 - Java 21
 - Spring Boot 4.1.0
+- Spring MVC
+- Springdoc OpenAPI (Swagger)
 - Maven 3.9+
 
 ---
