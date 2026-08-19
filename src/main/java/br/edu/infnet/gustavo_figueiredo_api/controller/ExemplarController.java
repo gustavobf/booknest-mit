@@ -43,6 +43,27 @@ public class ExemplarController extends BaseCrudController<Exemplar> {
     }
 
     @Override
+    @PostMapping
+    @Operation(summary = "Criar exemplar", description = "Cria um novo exemplar.")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Payload do exemplar a ser criado.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Exemplar.class), examples = @ExampleObject(name = "Exemplar", value = "{\n  \"codigo\": \"DOM-003\",\n  \"estadoConservacao\": \"BOM\",\n  \"disponivel\": true,\n  \"livro\": { \"id\": 1 }\n}")))
+    @ApiResponses({@ApiResponse(responseCode = "201", description = "Exemplar criado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos")})
+    public ResponseEntity<Exemplar> incluir (@RequestBody Exemplar entidade) {
+        return super.incluir(entidade);
+    }
+
+    @Override
+    @PutMapping("/{id}")
+    @Operation(summary = "Atualizar exemplar", description = "Atualiza um exemplar existente pelo ID informado.")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Payload atualizado do exemplar.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Exemplar.class), examples = @ExampleObject(name = "Exemplar", value = "{\n  \"codigo\": \"DOM-001\",\n  \"estadoConservacao\": \"EXCELENTE\",\n  \"disponivel\": true,\n  \"livro\": { \"id\": 1 }\n}")))
+    @ApiResponses({@ApiResponse(responseCode = "200", description = "Exemplar atualizado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+            @ApiResponse(responseCode = "404", description = "Exemplar não encontrado")})
+    public ResponseEntity<Exemplar> alterar (@PathVariable Integer id, @RequestBody Exemplar entidade) {
+        return super.alterar(id, entidade);
+    }
+
+    @Override
     @GetMapping
     @Operation(summary = "Listar exemplares", description = "Retorna exemplares com filtro opcional por disponibilidade. Sem parâmetro, retorna todos.")
     @Parameters({

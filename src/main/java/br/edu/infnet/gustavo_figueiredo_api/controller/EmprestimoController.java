@@ -45,6 +45,27 @@ public class EmprestimoController extends BaseCrudController<Emprestimo> {
     }
 
     @Override
+    @PostMapping
+    @Operation(summary = "Criar empréstimo", description = "Cria um novo empréstimo.")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Payload do empréstimo a ser criado.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Emprestimo.class), examples = @ExampleObject(name = "Empréstimo", value = "{\n  \"usuario\": { \"id\": 1 },\n  \"exemplar\": { \"id\": 4 },\n  \"dataEmprestimo\": \"2026-08-18\",\n  \"dataEsperadaDevolucao\": \"2026-09-01\",\n  \"dataDevolucao\": null,\n  \"multa\": 0.0\n}")))
+    @ApiResponses({@ApiResponse(responseCode = "201", description = "Empréstimo criado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos")})
+    public ResponseEntity<Emprestimo> incluir (@RequestBody Emprestimo entidade) {
+        return super.incluir(entidade);
+    }
+
+    @Override
+    @PutMapping("/{id}")
+    @Operation(summary = "Atualizar empréstimo", description = "Atualiza um empréstimo existente pelo ID informado.")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Payload atualizado do empréstimo.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Emprestimo.class), examples = @ExampleObject(name = "Empréstimo", value = "{\n  \"usuario\": { \"id\": 2 },\n  \"exemplar\": { \"id\": 3 },\n  \"dataEmprestimo\": \"2025-06-05\",\n  \"dataEsperadaDevolucao\": \"2025-06-20\",\n  \"dataDevolucao\": \"2025-06-22\",\n  \"multa\": 5.5\n}")))
+    @ApiResponses({@ApiResponse(responseCode = "200", description = "Empréstimo atualizado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+            @ApiResponse(responseCode = "404", description = "Empréstimo não encontrado")})
+    public ResponseEntity<Emprestimo> alterar (@PathVariable Integer id, @RequestBody Emprestimo entidade) {
+        return super.alterar(id, entidade);
+    }
+
+    @Override
     @GetMapping
     @Operation(summary = "Listar empréstimos", description = "Retorna empréstimos com filtro opcional por situação de atraso. Sem parâmetro, retorna todos.")
     @Parameters({

@@ -3,6 +3,7 @@ package br.edu.infnet.gustavo_figueiredo_api.controller;
 import br.edu.infnet.gustavo_figueiredo_api.model.*;
 import br.edu.infnet.gustavo_figueiredo_api.service.*;
 import io.swagger.v3.oas.annotations.*;
+import io.swagger.v3.oas.annotations.enums.*;
 import io.swagger.v3.oas.annotations.media.*;
 import io.swagger.v3.oas.annotations.responses.*;
 import io.swagger.v3.oas.annotations.tags.*;
@@ -39,6 +40,37 @@ public class UsuarioController extends BaseCrudController<Usuario> {
     @Override
     protected String getNomeEntidade () {
         return "Usuário";
+    }
+
+    @Override
+    @GetMapping
+    @Operation(summary = "Listar usuários", description = "Retorna usuários com filtro opcional por status de atividade. Sem parâmetro, retorna todos.")
+    @Parameters({
+            @Parameter(name = "ativo", in = ParameterIn.QUERY, description = "Filtro opcional: true para ativos, false para inativos. Sem parâmetro retorna todos.", example = "true")})
+    @ApiResponse(responseCode = "200", description = "Usuários listados com sucesso", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Usuario.class))))
+    public ResponseEntity<List<Usuario>> listar (@RequestParam(name = "ativo", required = false) Boolean ativo) {
+        return ResponseEntity.ok(usuarioService.listarPorAtivo(ativo));
+    }
+
+    @Override
+    @PostMapping
+    @Operation(summary = "Criar usuário", description = "Cria um novo usuário.")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Payload do usuário a ser criado.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Usuario.class), examples = @ExampleObject(name = "Usuário", value = "{\n  \"nome\": \"Fernanda Alves\",\n  \"email\": \"fernanda.alves@biblioteca.com\",\n  \"matricula\": \"MAT2026999\",\n  \"ativo\": true\n}")))
+    @ApiResponses({@ApiResponse(responseCode = "201", description = "Usuário criado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos")})
+    public ResponseEntity<Usuario> incluir (@RequestBody Usuario entidade) {
+        return super.incluir(entidade);
+    }
+
+    @Override
+    @PutMapping("/{id}")
+    @Operation(summary = "Atualizar usuário", description = "Atualiza um usuário existente pelo ID informado.")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Payload atualizado do usuário.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Usuario.class), examples = @ExampleObject(name = "Usuário", value = "{\n  \"nome\": \"João Silva\",\n  \"email\": \"joao.silva@biblioteca.com\",\n  \"matricula\": \"MAT2025001\",\n  \"ativo\": true\n}")))
+    @ApiResponses({@ApiResponse(responseCode = "200", description = "Usuário atualizado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado")})
+    public ResponseEntity<Usuario> alterar (@PathVariable Integer id, @RequestBody Usuario entidade) {
+        return super.alterar(id, entidade);
     }
 
     @GetMapping("/{id}/emprestimos")

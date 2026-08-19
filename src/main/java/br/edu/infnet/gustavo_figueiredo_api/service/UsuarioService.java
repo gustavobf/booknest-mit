@@ -45,4 +45,15 @@ public class UsuarioService extends BaseService<Usuario> {
     public List<Usuario> listarAtivos () {
         return obterLista().stream().filter(usuario -> Boolean.TRUE.equals(usuario.getAtivo())).toList();
     }
+
+    public List<Usuario> listarInativos () {
+        return obterLista().stream().filter(usuario -> Boolean.FALSE.equals(usuario.getAtivo())).toList();
+    }
+
+    public List<Usuario> listarPorAtivo (Boolean ativo) {
+        if (ativo == null) {
+            return obterLista();
+        }
+        return ativo ? listarAtivos() : listarInativos();
+    }
 }
