@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.*;
 import io.swagger.v3.oas.annotations.media.*;
 import io.swagger.v3.oas.annotations.responses.*;
 import io.swagger.v3.oas.annotations.tags.*;
+import jakarta.validation.*;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,6 +40,16 @@ public class AutorController extends BaseCrudController<Autor> {
     @Override
     protected String getNomeEntidade () {
         return "Autor";
+    }
+
+    @Override
+    @PostMapping
+    @Operation(summary = "Criar autor", description = "Cria um novo autor.")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Payload do autor a ser criado.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Autor.class), examples = @ExampleObject(name = "Autor", value = "{\n  \"nome\": \"Lygia Fagundes Telles\",\n  \"nacionalidade\": \"Brasileira\",\n  \"anoNascimento\": 1923\n}")))
+    @ApiResponses({@ApiResponse(responseCode = "201", description = "Autor criado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos")})
+    public ResponseEntity<Autor> incluir (@Valid @RequestBody Autor entidade) {
+        return super.incluir(entidade);
     }
 
     @GetMapping("/nacionalidade/{nacionalidade}")

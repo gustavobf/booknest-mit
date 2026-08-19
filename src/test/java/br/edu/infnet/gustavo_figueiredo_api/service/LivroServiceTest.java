@@ -3,51 +3,52 @@ package br.edu.infnet.gustavo_figueiredo_api.service;
 import br.edu.infnet.gustavo_figueiredo_api.exception.*;
 import br.edu.infnet.gustavo_figueiredo_api.model.*;
 import org.junit.jupiter.api.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.boot.test.context.*;
+import org.springframework.transaction.annotation.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
+@Transactional
 class LivroServiceTest {
+    @Autowired
+    private LivroService livroService;
+    @Autowired
+    private AutorService autorService;
+    @Autowired
+    private CategoriaService categoriaService;
+    @Autowired
+    private EditoraService editoraService;
 
     @Test
-    void deveExecutarCrudEmMemoria () {
-        LivroService livroService = criarService();
+    void deveExecutarCrudPersistido () {
+        Livro livro = criarLivro("Clean Code");
+        Livro livroCriado = livroService.incluir(livro);
+        Integer idCriado = livroCriado.getId();
 
-        Livro livro = criarLivro(10, "Clean Code");
-        livroService.incluir(livro);
+        assertEquals("Clean Code", livroService.obterPorId(idCriado).getTitulo());
 
-        assertEquals(1, livroService.obterLista().size());
-        assertEquals("Clean Code", livroService.obterPorId(10).getTitulo());
+        livroCriado.setTitulo("Clean Code Atualizado");
+        livroService.alterar(livroCriado);
 
-        livro.setTitulo("Clean Code Atualizado");
-        livroService.alterar(livro);
+        assertEquals("Clean Code Atualizado", livroService.obterPorId(idCriado).getTitulo());
 
-        assertEquals("Clean Code Atualizado", livroService.obterPorId(10).getTitulo());
-
-        livroService.excluir(10);
-
-        assertTrue(livroService.obterLista().isEmpty());
+        livroService.excluir(idCriado);
+        assertThrows(RegistroNaoEncontradoException.class, () -> livroService.obterPorId(idCriado));
     }
 
     @Test
-    void deveLancarExcecaoAoBuscarRegistroInexistente () {
-        LivroService livroService = criarService();
-
-        assertThrows(RegistroNaoEncontradoException.class, () -> livroService.obterPorId(99));
+    void deveRetornarLivrosDisponiveisComConsultaCustomizada () {
+        assertFalse(livroService.listarDisponiveis().isEmpty());
+        assertFalse(livroService.listarOrdenadosPorTitulo().isEmpty());
     }
 
-    private LivroService criarService () {
-        return new LivroService();
-    }
-
-    private Livro criarLivro (int id, String titulo) {
-        Autor autor = new Autor(1, "Autor", "Brasileiro", 1980);
-        Categoria categoria = new Categoria(1, "Categoria", "Descricao");
-        Editora editora = new Editora(1, "Editora", "Cidade", "contato@editora.com", true);
-
-        Livro livro = new Livro(id, titulo, "ISBN-001");
-        livro.setAutor(autor);
-        livro.setCategoria(categoria);
-        livro.setEditora(editora);
+    private Livro criarLivro (String titulo) {
+        Livro livro = new Livro(null, titulo, "ISBN-001");
+        livro.setAutor(autorService.obterPorId(1));
+        livro.setCategoria(categoriaService.obterPorId(1));
+        livro.setEditora(editoraService.obterPorId(1));
         return livro;
     }
 }

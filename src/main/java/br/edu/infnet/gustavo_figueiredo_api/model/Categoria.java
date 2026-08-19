@@ -2,16 +2,28 @@ package br.edu.infnet.gustavo_figueiredo_api.model;
 
 import com.fasterxml.jackson.annotation.*;
 import io.swagger.v3.oas.annotations.media.*;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 import java.util.*;
 
+@Entity
+@Table(name = "categorias")
 public class Categoria implements Entidade {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Schema(description = "ID da categoria", example = "1")
+    @Positive(message = "ID da categoria deve ser positivo.")
     private Integer id;
     @Schema(description = "Nome da categoria", example = "Ficção")
+    @NotBlank(message = "Nome da categoria é obrigatório.")
+    @Size(max = 80, message = "Nome da categoria deve ter no máximo 80 caracteres.")
     private String nome;
     @Schema(description = "Descrição da categoria", example = "Narrativas de ficção literária")
+    @NotBlank(message = "Descrição da categoria é obrigatória.")
+    @Size(max = 255, message = "Descrição da categoria deve ter no máximo 255 caracteres.")
     private String descricao;
+    @OneToMany(mappedBy = "categoria")
     @JsonIgnore
     private List<Livro> livros = new ArrayList<>();
 

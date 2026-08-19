@@ -1,6 +1,10 @@
 # 📚 Sistema de Gestão de Biblioteca
 
-Uma aplicação de gerenciamento de biblioteca desenvolvida com **Spring Boot**, **Java 21** e **Maven**, implementando conceitos de POO, relacionamentos entre entidades e carregamento de dados de arquivos.
+Uma aplicação de gerenciamento de biblioteca desenvolvida com **Spring Boot**, **Java 21** e **Maven**, com persistência relacional usando **Spring Data JPA**.
+
+A carga inicial é feita automaticamente no startup do banco via `src/main/resources/data.sql`.
+
+A integração externa com ViaCEP também complementa o domínio: é possível atualizar a cidade de uma editora a partir de um CEP pelo endpoint `PATCH /editoras/{id}/cidade-por-cep?cep=01001000`.
 
 ## 🚀 Como Usar
 
@@ -29,6 +33,10 @@ Com a aplicação em execução:
 - Java 21
 - Spring Boot 4.1.0
 - Spring MVC
+- Spring Data JPA
+- Bean Validation
+- H2 Database
+- OpenFeign
 - Springdoc OpenAPI (Swagger)
 - Maven 3.9+
 

@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.enums.*;
 import io.swagger.v3.oas.annotations.media.*;
 import io.swagger.v3.oas.annotations.responses.*;
 import io.swagger.v3.oas.annotations.tags.*;
+import jakarta.validation.*;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,6 +41,16 @@ public class ExemplarController extends BaseCrudController<Exemplar> {
     @Override
     protected String getNomeEntidade () {
         return "Exemplar";
+    }
+
+    @Override
+    @PostMapping
+    @Operation(summary = "Criar exemplar", description = "Cria um novo exemplar.")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Payload do exemplar a ser criado.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Exemplar.class), examples = @ExampleObject(name = "Exemplar", value = "{\n  \"codigo\": \"DOM-003\",\n  \"estadoConservacao\": \"BOM\",\n  \"disponivel\": true,\n  \"livro\": { \"id\": 1 }\n}")))
+    @ApiResponses({@ApiResponse(responseCode = "201", description = "Exemplar criado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos")})
+    public ResponseEntity<Exemplar> incluir (@Valid @RequestBody Exemplar entidade) {
+        return super.incluir(entidade);
     }
 
     @Override

@@ -2,22 +2,38 @@ package br.edu.infnet.gustavo_figueiredo_api.model;
 
 import com.fasterxml.jackson.annotation.*;
 import io.swagger.v3.oas.annotations.media.*;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 import java.util.*;
 
+@Entity
+@Table(name = "usuarios")
 public class Usuario implements Entidade {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Schema(description = "ID do usuário", example = "1")
+    @Positive(message = "ID do usuário deve ser positivo.")
     private Integer id;
     @Schema(description = "Nome do usuário", example = "João Silva")
+    @NotBlank(message = "Nome do usuário é obrigatório.")
+    @Size(max = 120, message = "Nome do usuário deve ter no máximo 120 caracteres.")
     private String nome;
     @Schema(description = "E-mail do usuário", example = "joao.silva@biblioteca.com")
+    @NotBlank(message = "E-mail do usuário é obrigatório.")
+    @Email(message = "E-mail do usuário inválido.")
     private String email;
     @Schema(description = "Matrícula do usuário", example = "MAT2025001")
+    @NotBlank(message = "Matrícula do usuário é obrigatória.")
+    @Size(max = 30, message = "Matrícula deve ter no máximo 30 caracteres.")
+    @Column(unique = true)
     private String matricula;
     @Schema(description = "Indica se o usuário está ativo", example = "true")
+    @NotNull(message = "Situação de atividade do usuário é obrigatória.")
     private Boolean ativo;
+    @OneToMany(mappedBy = "usuario")
     @JsonIgnore
-    private final List<Emprestimo> emprestimos = new ArrayList<>();
+    private List<Emprestimo> emprestimos = new ArrayList<>();
 
     public Usuario () {
     }

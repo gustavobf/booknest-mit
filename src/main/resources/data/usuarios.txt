@@ -1,5 +1,0 @@
-1;João Silva;joao.silva@biblioteca.com;MAT2025001;true
-2;Maria Santos;maria.santos@biblioteca.com;MAT2025002;true
-3;Pedro Oliveira;pedro.oliveira@biblioteca.com;MAT2025003;true
-4;Ana Costa;ana.costa@biblioteca.com;MAT2025004;true
-5;Carlos Lima;carlos.lima@biblioteca.com;MAT2025005;false

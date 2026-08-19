@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.enums.*;
 import io.swagger.v3.oas.annotations.media.*;
 import io.swagger.v3.oas.annotations.responses.*;
 import io.swagger.v3.oas.annotations.tags.*;
+import jakarta.validation.*;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,6 +41,16 @@ public class LivroController extends BaseCrudController<Livro> {
     @Override
     protected String getNomeEntidade () {
         return "Livro";
+    }
+
+    @Override
+    @PostMapping
+    @Operation(summary = "Criar livro", description = "Cria um novo livro.")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Payload do livro a ser criado.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Livro.class), examples = @ExampleObject(name = "Livro", value = "{\n  \"titulo\": \"A Paixão Segundo G.H.\",\n  \"isbn\": \"978-8520926658\",\n  \"autor\": { \"id\": 2 },\n  \"categoria\": { \"id\": 1 },\n  \"editora\": { \"id\": 1 }\n}")))
+    @ApiResponses({@ApiResponse(responseCode = "201", description = "Livro criado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos")})
+    public ResponseEntity<Livro> incluir (@Valid @RequestBody Livro entidade) {
+        return super.incluir(entidade);
     }
 
     @Override

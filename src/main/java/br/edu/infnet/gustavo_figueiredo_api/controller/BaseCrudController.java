@@ -6,6 +6,7 @@ import br.edu.infnet.gustavo_figueiredo_api.service.*;
 import io.swagger.v3.oas.annotations.*;
 import io.swagger.v3.oas.annotations.media.*;
 import io.swagger.v3.oas.annotations.responses.*;
+import jakarta.validation.*;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.*;
@@ -44,7 +45,7 @@ public abstract class BaseCrudController<T extends Entidade> {
     @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Payload do registro a ser criado.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Object.class), examples = @ExampleObject(name = "Exemplo", value = "{ \"id\": 1 }")))
     @ApiResponses({@ApiResponse(responseCode = "201", description = "Registro criado com sucesso"),
             @ApiResponse(responseCode = "400", description = "Dados inválidos")})
-    public ResponseEntity<T> incluir (@RequestBody T entidade) {
+    public ResponseEntity<T> incluir (@Valid @RequestBody T entidade) {
         T entidadeCriada = getService().incluir(validarEntidade(entidade));
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(getId(entidadeCriada)).toUri();
@@ -57,7 +58,7 @@ public abstract class BaseCrudController<T extends Entidade> {
     @ApiResponses({@ApiResponse(responseCode = "200", description = "Registro atualizado com sucesso"),
             @ApiResponse(responseCode = "400", description = "Dados inválidos"),
             @ApiResponse(responseCode = "404", description = "Registro não encontrado")})
-    public ResponseEntity<T> alterar (@PathVariable Integer id, @RequestBody T entidade) {
+    public ResponseEntity<T> alterar (@PathVariable Integer id, @Valid @RequestBody T entidade) {
         T entidadeValida = validarEntidade(entidade);
         setId(entidadeValida, id);
         return ResponseEntity.ok(getService().alterar(entidadeValida));

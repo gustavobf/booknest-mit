@@ -2,20 +2,29 @@ package br.edu.infnet.gustavo_figueiredo_api.service;
 
 import br.edu.infnet.gustavo_figueiredo_api.exception.*;
 import br.edu.infnet.gustavo_figueiredo_api.model.*;
+import br.edu.infnet.gustavo_figueiredo_api.repository.*;
+import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.*;
+import org.springframework.transaction.annotation.*;
 
 import java.util.*;
 
 @Service
 public class CategoriaService extends BaseService<Categoria> {
-    @Override
-    protected Integer obterId (Categoria entidade) {
-        return entidade.getId();
+    private final CategoriaRepository categoriaRepository;
+
+    public CategoriaService (CategoriaRepository categoriaRepository) {
+        this.categoriaRepository = categoriaRepository;
     }
 
     @Override
-    protected void definirId (Categoria entidade, Integer id) {
-        entidade.setId(id);
+    protected JpaRepository<Categoria, Integer> getRepository () {
+        return categoriaRepository;
+    }
+
+    @Override
+    protected Integer obterId (Categoria entidade) {
+        return entidade.getId();
     }
 
     @Override
@@ -36,8 +45,8 @@ public class CategoriaService extends BaseService<Categoria> {
         return "Categoria";
     }
 
+    @Transactional(readOnly = true)
     public List<Categoria> listarOrdenadasPorQuantidadeLivros () {
-        return obterLista().stream().sorted((c1, c2) -> Long.compare(c2.getLivros().size(), c1.getLivros().size()))
-                .toList();
+        return categoriaRepository.findAllOrderByQuantidadeLivrosDesc();
     }
 }

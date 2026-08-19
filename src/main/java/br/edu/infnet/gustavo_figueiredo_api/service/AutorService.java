@@ -2,20 +2,29 @@ package br.edu.infnet.gustavo_figueiredo_api.service;
 
 import br.edu.infnet.gustavo_figueiredo_api.exception.*;
 import br.edu.infnet.gustavo_figueiredo_api.model.*;
+import br.edu.infnet.gustavo_figueiredo_api.repository.*;
+import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.*;
+import org.springframework.transaction.annotation.*;
 
 import java.util.*;
 
 @Service
 public class AutorService extends BaseService<Autor> {
-    @Override
-    protected Integer obterId (Autor entidade) {
-        return entidade.getId();
+    private final AutorRepository autorRepository;
+
+    public AutorService (AutorRepository autorRepository) {
+        this.autorRepository = autorRepository;
     }
 
     @Override
-    protected void definirId (Autor entidade, Integer id) {
-        entidade.setId(id);
+    protected JpaRepository<Autor, Integer> getRepository () {
+        return autorRepository;
+    }
+
+    @Override
+    protected Integer obterId (Autor entidade) {
+        return entidade.getId();
     }
 
     @Override
@@ -39,11 +48,13 @@ public class AutorService extends BaseService<Autor> {
         return "Autor";
     }
 
+    @Transactional(readOnly = true)
     public List<Autor> listarOrdenadosPorNome () {
-        return obterLista().stream().sorted((a1, a2) -> a1.getNome().compareToIgnoreCase(a2.getNome())).toList();
+        return autorRepository.findAllByOrderByNomeAsc();
     }
 
+    @Transactional(readOnly = true)
     public List<Autor> buscarPorNacionalidade (String nacionalidade) {
-        return obterLista().stream().filter(autor -> autor.getNacionalidade().equalsIgnoreCase(nacionalidade)).toList();
+        return autorRepository.findByNacionalidadeIgnoreCase(nacionalidade);
     }
 }

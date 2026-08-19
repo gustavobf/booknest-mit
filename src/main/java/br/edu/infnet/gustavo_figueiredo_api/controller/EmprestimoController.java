@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.enums.*;
 import io.swagger.v3.oas.annotations.media.*;
 import io.swagger.v3.oas.annotations.responses.*;
 import io.swagger.v3.oas.annotations.tags.*;
+import jakarta.validation.*;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,6 +46,16 @@ public class EmprestimoController extends BaseCrudController<Emprestimo> {
     }
 
     @Override
+    @PostMapping
+    @Operation(summary = "Criar empréstimo", description = "Cria um novo empréstimo.")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Payload do empréstimo a ser criado.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Emprestimo.class), examples = @ExampleObject(name = "Emprestimo", value = "{\n  \"usuario\": { \"id\": 1 },\n  \"exemplar\": { \"id\": 4 },\n  \"dataEmprestimo\": \"2026-08-18\",\n  \"dataEsperadaDevolucao\": \"2026-09-01\",\n  \"dataDevolucao\": null,\n  \"multa\": 0.0\n}")))
+    @ApiResponses({@ApiResponse(responseCode = "201", description = "Empréstimo criado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos")})
+    public ResponseEntity<Emprestimo> incluir (@Valid @RequestBody Emprestimo entidade) {
+        return super.incluir(entidade);
+    }
+
+    @Override
     @GetMapping
     @Operation(summary = "Listar empréstimos", description = "Retorna empréstimos com filtro opcional por situação de atraso. Sem parâmetro, retorna todos.")
     @Parameters({
@@ -64,7 +75,7 @@ public class EmprestimoController extends BaseCrudController<Emprestimo> {
             @ApiResponse(responseCode = "404", description = "Empréstimo não encontrado")})
     public ResponseEntity<Emprestimo> registrarDevolucao (
             @Parameter(description = "ID do empréstimo", example = "2") @PathVariable Integer id,
-            @RequestBody RegistrarDevolucaoRequest request) {
+            @Valid @RequestBody RegistrarDevolucaoRequest request) {
         if (request == null) {
             throw new DadosInvalidosException("Payload de devolução não pode ser nulo.");
         }

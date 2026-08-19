@@ -1,5 +1,0 @@
-1;Dom Casmurro;978-8535905571;1;2;1
-2;A Hora da Estrela;978-8526018395;2;1;1
-3;O Alquimista;978-8504006032;3;3;2
-4;Capitães da Areia;978-8535914924;4;1;1
-5;Memórias Póstumas de Brás Cubas;978-8526004565;1;2;3

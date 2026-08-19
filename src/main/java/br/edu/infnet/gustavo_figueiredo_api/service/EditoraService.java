@@ -1,21 +1,33 @@
 package br.edu.infnet.gustavo_figueiredo_api.service;
 
 import br.edu.infnet.gustavo_figueiredo_api.exception.*;
+import br.edu.infnet.gustavo_figueiredo_api.integration.dto.*;
 import br.edu.infnet.gustavo_figueiredo_api.model.*;
+import br.edu.infnet.gustavo_figueiredo_api.repository.*;
+import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.*;
+import org.springframework.transaction.annotation.*;
 
 import java.util.*;
 
 @Service
 public class EditoraService extends BaseService<Editora> {
-    @Override
-    protected Integer obterId (Editora entidade) {
-        return entidade.getId();
+    private final EditoraRepository editoraRepository;
+    private final CepService cepService;
+
+    public EditoraService (EditoraRepository editoraRepository, CepService cepService) {
+        this.editoraRepository = editoraRepository;
+        this.cepService = cepService;
     }
 
     @Override
-    protected void definirId (Editora entidade, Integer id) {
-        entidade.setId(id);
+    protected JpaRepository<Editora, Integer> getRepository () {
+        return editoraRepository;
+    }
+
+    @Override
+    protected Integer obterId (Editora entidade) {
+        return entidade.getId();
     }
 
     @Override
@@ -42,18 +54,33 @@ public class EditoraService extends BaseService<Editora> {
         return "Editora";
     }
 
+    @Transactional(readOnly = true)
     public List<Editora> listarAtivas () {
-        return obterLista().stream().filter(editora -> Boolean.TRUE.equals(editora.getAtiva())).toList();
+        return editoraRepository.findByAtivaTrue();
     }
 
+    @Transactional(readOnly = true)
     public List<Editora> listarInativas () {
-        return obterLista().stream().filter(editora -> Boolean.FALSE.equals(editora.getAtiva())).toList();
+        return editoraRepository.findByAtivaFalse();
     }
 
+    @Transactional(readOnly = true)
     public List<Editora> listarPorAtiva (Boolean ativa) {
         if (ativa == null) {
             return obterLista();
         }
         return ativa ? listarAtivas() : listarInativas();
+    }
+
+    @Transactional
+    public Editora atualizarCidadePorCep (Integer idEditora, String cep) {
+        Editora editora = obterPorId(idEditora);
+        ViaCepResponse endereco = cepService.consultar(cep);
+        if (endereco.cidade() == null || endereco.cidade().isBlank()) {
+            throw new DadosInvalidosException("A API externa não retornou cidade para o CEP informado.");
+        }
+
+        editora.setCidade(endereco.cidade());
+        return editoraRepository.save(editora);
     }
 }

@@ -2,26 +2,48 @@ package br.edu.infnet.gustavo_figueiredo_api.model;
 
 import com.fasterxml.jackson.annotation.*;
 import io.swagger.v3.oas.annotations.media.*;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 import java.util.*;
 
+@Entity
+@Table(name = "livros")
 public class Livro implements Entidade {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Schema(description = "ID do livro", example = "1")
+    @Positive(message = "ID do livro deve ser positivo.")
     private Integer id;
     @Schema(description = "Título do livro", example = "Dom Casmurro")
+    @NotBlank(message = "Título do livro é obrigatório.")
+    @Size(max = 160, message = "Título do livro deve ter no máximo 160 caracteres.")
     private String titulo;
     @Schema(description = "ISBN do livro", example = "978-8535905571")
+    @NotBlank(message = "ISBN do livro é obrigatório.")
+    @Size(max = 20, message = "ISBN deve ter no máximo 20 caracteres.")
     private String isbn;
     @Schema(description = "Autor associado ao livro", implementation = Autor.class)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "autor_id", nullable = false)
+    @NotNull(message = "Livro deve possuir autor.")
+    @JsonIgnoreProperties("livros")
     private Autor autor;
     @Schema(description = "Categoria associada ao livro", implementation = Categoria.class)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "categoria_id", nullable = false)
+    @NotNull(message = "Livro deve possuir categoria.")
+    @JsonIgnoreProperties("livros")
     private Categoria categoria;
     @Schema(description = "Editora associada ao livro", implementation = Editora.class)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "editora_id", nullable = false)
+    @NotNull(message = "Livro deve possuir editora.")
+    @JsonIgnoreProperties("livros")
     private Editora editora;
+    @OneToMany(mappedBy = "livro")
     @JsonIgnore
-    private final List<Exemplar> exemplares = new ArrayList<>();
-    @JsonIgnore
-    private final List<Emprestimo> emprestimos = new ArrayList<>();
+    private List<Exemplar> exemplares = new ArrayList<>();
 
     public Livro () {
     }
@@ -103,14 +125,6 @@ public class Livro implements Entidade {
 
     public long getQuantidadeExemplaresEmprestados () {
         return exemplares.size() - getQuantidadeExemplaresDisponiveis();
-    }
-
-    public List<Emprestimo> getEmprestimos () {
-        return emprestimos;
-    }
-
-    public void adicionarEmprestimo (Emprestimo emprestimo) {
-        this.emprestimos.add(emprestimo);
     }
 
     @Override
