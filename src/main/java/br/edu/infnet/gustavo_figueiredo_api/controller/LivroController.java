@@ -54,6 +54,17 @@ public class LivroController extends BaseCrudController<Livro> {
     }
 
     @Override
+    @PutMapping("/{id}")
+    @Operation(summary = "Atualizar livro", description = "Atualiza um livro existente pelo ID informado.")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Payload atualizado do livro.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Livro.class), examples = @ExampleObject(name = "Livro", value = "{\n  \"titulo\": \"Dom Casmurro (Edição Revisada)\",\n  \"isbn\": \"978-8535905571\",\n  \"autor\": { \"id\": 1 },\n  \"categoria\": { \"id\": 2 },\n  \"editora\": { \"id\": 1 }\n}")))
+    @ApiResponses({@ApiResponse(responseCode = "200", description = "Livro atualizado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+            @ApiResponse(responseCode = "404", description = "Livro não encontrado")})
+    public ResponseEntity<Livro> alterar (@PathVariable Integer id, @RequestBody Livro entidade) {
+        return super.alterar(id, entidade);
+    }
+
+    @Override
     @GetMapping
     @Operation(summary = "Listar livros", description = "Retorna livros com filtro opcional por disponibilidade. Sem parâmetro, retorna todos.")
     @Parameters({

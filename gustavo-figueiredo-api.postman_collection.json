@@ -9,6 +9,7 @@
       "name": "Autores",
       "item": [
         { "name": "Listar autores", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/autores", "host": ["{{baseUrl}}"], "path": ["autores"] } } },
+        { "name": "Listar autores ordenados por nome", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/autores?ordenarPorNome=true", "host": ["{{baseUrl}}"], "path": ["autores"], "query": [{ "key": "ordenarPorNome", "value": "true" }] } } },
         { "name": "Obter autor por ID", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/autores/{{autorId}}", "host": ["{{baseUrl}}"], "path": ["autores", "{{autorId}}"] } } },
         { "name": "Buscar autores por nacionalidade", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/autores/nacionalidade/{{nacionalidade}}", "host": ["{{baseUrl}}"], "path": ["autores", "nacionalidade", "{{nacionalidade}}"] } } },
         {
@@ -36,6 +37,7 @@
       "name": "Categorias",
       "item": [
         { "name": "Listar categorias", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/categorias", "host": ["{{baseUrl}}"], "path": ["categorias"] } } },
+        { "name": "Listar categorias por quantidade de livros", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/categorias?ordenarPorQuantidadeLivros=true", "host": ["{{baseUrl}}"], "path": ["categorias"], "query": [{ "key": "ordenarPorQuantidadeLivros", "value": "true" }] } } },
         { "name": "Obter categoria por ID", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/categorias/{{categoriaId}}", "host": ["{{baseUrl}}"], "path": ["categorias", "{{categoriaId}}"] } } },
         {
           "name": "Criar categoria",
@@ -90,7 +92,9 @@
     {
       "name": "Usuarios",
       "item": [
-        { "name": "Listar usuários", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/usuarios", "host": ["{{baseUrl}}"], "path": ["usuarios"] } } },
+        { "name": "Listar usuários (todos)", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/usuarios", "host": ["{{baseUrl}}"], "path": ["usuarios"] } } },
+        { "name": "Listar usuários ativos", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/usuarios?ativo=true", "host": ["{{baseUrl}}"], "path": ["usuarios"], "query": [{ "key": "ativo", "value": "true" }] } } },
+        { "name": "Listar usuários inativos", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/usuarios?ativo=false", "host": ["{{baseUrl}}"], "path": ["usuarios"], "query": [{ "key": "ativo", "value": "false" }] } } },
         { "name": "Obter usuário por ID", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/usuarios/{{usuarioId}}", "host": ["{{baseUrl}}"], "path": ["usuarios", "{{usuarioId}}"] } } },
         { "name": "Listar empréstimos do usuário", "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/usuarios/{{usuarioId}}/emprestimos", "host": ["{{baseUrl}}"], "path": ["usuarios", "{{usuarioId}}", "emprestimos"] } } },
         {

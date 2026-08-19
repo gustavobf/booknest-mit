@@ -54,6 +54,17 @@ public class EditoraController extends BaseCrudController<Editora> {
     }
 
     @Override
+    @PutMapping("/{id}")
+    @Operation(summary = "Atualizar editora", description = "Atualiza uma editora existente pelo ID informado.")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Payload atualizado da editora.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Editora.class), examples = @ExampleObject(name = "Editora", value = "{\n  \"nome\": \"Companhia das Letras\",\n  \"cidade\": \"São Paulo\",\n  \"emailContato\": \"atendimento@companhiadasletras.com.br\",\n  \"ativa\": true\n}")))
+    @ApiResponses({@ApiResponse(responseCode = "200", description = "Editora atualizada com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+            @ApiResponse(responseCode = "404", description = "Editora não encontrada")})
+    public ResponseEntity<Editora> alterar (@PathVariable Integer id, @RequestBody Editora entidade) {
+        return super.alterar(id, entidade);
+    }
+
+    @Override
     @GetMapping
     @Operation(summary = "Listar editoras", description = "Retorna editoras com filtro opcional por status de atividade. Sem parâmetro, retorna todas.")
     @Parameters({

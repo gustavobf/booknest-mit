@@ -63,6 +63,17 @@ public class UsuarioController extends BaseCrudController<Usuario> {
         return ResponseEntity.ok(usuarioService.listarPorAtivo(ativo));
     }
 
+    @Override
+    @PutMapping("/{id}")
+    @Operation(summary = "Atualizar usuário", description = "Atualiza um usuário existente pelo ID informado.")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Payload atualizado do usuário.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Usuario.class), examples = @ExampleObject(name = "Usuário", value = "{\n  \"nome\": \"João Silva\",\n  \"email\": \"joao.silva@biblioteca.com\",\n  \"matricula\": \"MAT2025001\",\n  \"ativo\": true\n}")))
+    @ApiResponses({@ApiResponse(responseCode = "200", description = "Usuário atualizado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado")})
+    public ResponseEntity<Usuario> alterar (@PathVariable Integer id, @RequestBody Usuario entidade) {
+        return super.alterar(id, entidade);
+    }
+
     @GetMapping("/{id}/emprestimos")
     @Operation(summary = "Listar empréstimos do usuário", description = "Retorna o histórico de empréstimos de um usuário específico.")
     @ApiResponses({
