@@ -2,10 +2,6 @@
 
 Uma aplicação de gerenciamento de biblioteca desenvolvida com **Spring Boot**, **Java 21** e **Maven**, com persistência relacional usando **Spring Data JPA**.
 
-A carga inicial é feita automaticamente no startup do banco via `src/main/resources/data.sql`.
-
-A integração externa com ViaCEP também complementa o domínio: é possível atualizar a cidade de uma editora a partir de um CEP pelo endpoint `PATCH /editoras/{id}/cidade-por-cep?cep=01001000`.
-
 ## 🚀 Como Usar
 
 ### Pré-requisitos
