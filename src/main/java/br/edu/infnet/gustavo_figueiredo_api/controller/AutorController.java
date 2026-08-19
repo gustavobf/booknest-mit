@@ -74,7 +74,7 @@ public class AutorController extends BaseCrudController<Autor> {
     @ApiResponses({@ApiResponse(responseCode = "200", description = "Autor atualizado com sucesso"),
             @ApiResponse(responseCode = "400", description = "Dados inválidos"),
             @ApiResponse(responseCode = "404", description = "Autor não encontrado")})
-    public ResponseEntity<Autor> alterar (@PathVariable Integer id, @RequestBody Autor entidade) {
+    public ResponseEntity<Autor> alterar (@PathVariable Integer id, @Valid @RequestBody Autor entidade) {
         return super.alterar(id, entidade);
     }
 

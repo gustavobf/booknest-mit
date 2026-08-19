@@ -60,7 +60,7 @@ public class ExemplarController extends BaseCrudController<Exemplar> {
     @ApiResponses({@ApiResponse(responseCode = "200", description = "Exemplar atualizado com sucesso"),
             @ApiResponse(responseCode = "400", description = "Dados inválidos"),
             @ApiResponse(responseCode = "404", description = "Exemplar não encontrado")})
-    public ResponseEntity<Exemplar> alterar (@PathVariable Integer id, @RequestBody Exemplar entidade) {
+    public ResponseEntity<Exemplar> alterar (@PathVariable Integer id, @Valid @RequestBody Exemplar entidade) {
         return super.alterar(id, entidade);
     }
 

@@ -74,7 +74,7 @@ public class CategoriaController extends BaseCrudController<Categoria> {
     @ApiResponses({@ApiResponse(responseCode = "200", description = "Categoria atualizada com sucesso"),
             @ApiResponse(responseCode = "400", description = "Dados inválidos"),
             @ApiResponse(responseCode = "404", description = "Categoria não encontrada")})
-    public ResponseEntity<Categoria> alterar (@PathVariable Integer id, @RequestBody Categoria entidade) {
+    public ResponseEntity<Categoria> alterar (@PathVariable Integer id, @Valid @RequestBody Categoria entidade) {
         return super.alterar(id, entidade);
     }
 }

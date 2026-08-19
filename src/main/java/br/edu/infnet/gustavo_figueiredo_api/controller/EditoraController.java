@@ -60,7 +60,7 @@ public class EditoraController extends BaseCrudController<Editora> {
     @ApiResponses({@ApiResponse(responseCode = "200", description = "Editora atualizada com sucesso"),
             @ApiResponse(responseCode = "400", description = "Dados inválidos"),
             @ApiResponse(responseCode = "404", description = "Editora não encontrada")})
-    public ResponseEntity<Editora> alterar (@PathVariable Integer id, @RequestBody Editora entidade) {
+    public ResponseEntity<Editora> alterar (@PathVariable Integer id, @Valid @RequestBody Editora entidade) {
         return super.alterar(id, entidade);
     }
 

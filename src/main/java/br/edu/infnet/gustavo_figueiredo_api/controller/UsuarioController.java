@@ -70,7 +70,7 @@ public class UsuarioController extends BaseCrudController<Usuario> {
     @ApiResponses({@ApiResponse(responseCode = "200", description = "Usuário atualizado com sucesso"),
             @ApiResponse(responseCode = "400", description = "Dados inválidos"),
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado")})
-    public ResponseEntity<Usuario> alterar (@PathVariable Integer id, @RequestBody Usuario entidade) {
+    public ResponseEntity<Usuario> alterar (@PathVariable Integer id, @Valid @RequestBody Usuario entidade) {
         return super.alterar(id, entidade);
     }
 

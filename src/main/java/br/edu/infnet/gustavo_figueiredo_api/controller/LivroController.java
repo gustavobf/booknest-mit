@@ -60,7 +60,7 @@ public class LivroController extends BaseCrudController<Livro> {
     @ApiResponses({@ApiResponse(responseCode = "200", description = "Livro atualizado com sucesso"),
             @ApiResponse(responseCode = "400", description = "Dados inválidos"),
             @ApiResponse(responseCode = "404", description = "Livro não encontrado")})
-    public ResponseEntity<Livro> alterar (@PathVariable Integer id, @RequestBody Livro entidade) {
+    public ResponseEntity<Livro> alterar (@PathVariable Integer id, @Valid @RequestBody Livro entidade) {
         return super.alterar(id, entidade);
     }
 

@@ -62,7 +62,7 @@ public class EmprestimoController extends BaseCrudController<Emprestimo> {
     @ApiResponses({@ApiResponse(responseCode = "200", description = "Empréstimo atualizado com sucesso"),
             @ApiResponse(responseCode = "400", description = "Dados inválidos"),
             @ApiResponse(responseCode = "404", description = "Empréstimo não encontrado")})
-    public ResponseEntity<Emprestimo> alterar (@PathVariable Integer id, @RequestBody Emprestimo entidade) {
+    public ResponseEntity<Emprestimo> alterar (@PathVariable Integer id, @Valid @RequestBody Emprestimo entidade) {
         return super.alterar(id, entidade);
     }
 
