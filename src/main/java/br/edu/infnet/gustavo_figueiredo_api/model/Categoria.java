@@ -1,12 +1,16 @@
 package br.edu.infnet.gustavo_figueiredo_api.model;
 
 import com.fasterxml.jackson.annotation.*;
+import io.swagger.v3.oas.annotations.media.*;
 
 import java.util.*;
 
 public class Categoria implements Entidade {
+    @Schema(description = "ID da categoria", example = "1")
     private Integer id;
+    @Schema(description = "Nome da categoria", example = "Ficção")
     private String nome;
+    @Schema(description = "Descrição da categoria", example = "Narrativas de ficção literária")
     private String descricao;
     @JsonIgnore
     private List<Livro> livros = new ArrayList<>();

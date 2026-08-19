@@ -45,4 +45,15 @@ public class EditoraService extends BaseService<Editora> {
     public List<Editora> listarAtivas () {
         return obterLista().stream().filter(editora -> Boolean.TRUE.equals(editora.getAtiva())).toList();
     }
+
+    public List<Editora> listarInativas () {
+        return obterLista().stream().filter(editora -> Boolean.FALSE.equals(editora.getAtiva())).toList();
+    }
+
+    public List<Editora> listarPorAtiva (Boolean ativa) {
+        if (ativa == null) {
+            return obterLista();
+        }
+        return ativa ? listarAtivas() : listarInativas();
+    }
 }

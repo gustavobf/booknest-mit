@@ -53,6 +53,17 @@ public class LivroService extends BaseService<Livro> {
         return obterLista().stream().filter(livro -> Boolean.TRUE.equals(livro.getDisponivel())).toList();
     }
 
+    public List<Livro> listarIndisponiveis () {
+        return obterLista().stream().filter(livro -> Boolean.FALSE.equals(livro.getDisponivel())).toList();
+    }
+
+    public List<Livro> listarPorDisponibilidade (Boolean disponivel) {
+        if (disponivel == null) {
+            return obterLista();
+        }
+        return disponivel ? listarDisponiveis() : listarIndisponiveis();
+    }
+
     public List<Livro> buscarPorAutor (Integer idAutor) {
         return obterLista().stream()
                 .filter(livro -> livro.getAutor() != null && livro.getAutor().getId().equals(idAutor)).toList();

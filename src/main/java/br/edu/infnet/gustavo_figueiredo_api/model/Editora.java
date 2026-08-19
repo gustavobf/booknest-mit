@@ -1,14 +1,20 @@
 package br.edu.infnet.gustavo_figueiredo_api.model;
 
 import com.fasterxml.jackson.annotation.*;
+import io.swagger.v3.oas.annotations.media.*;
 
 import java.util.*;
 
 public class Editora implements Entidade {
+    @Schema(description = "ID da editora", example = "1")
     private Integer id;
+    @Schema(description = "Nome da editora", example = "Companhia das Letras")
     private String nome;
+    @Schema(description = "Cidade sede da editora", example = "São Paulo")
     private String cidade;
+    @Schema(description = "E-mail de contato", example = "contato@companhiadasletras.com.br")
     private String emailContato;
+    @Schema(description = "Indicador de atividade da editora", example = "true")
     private Boolean ativa;
     @JsonIgnore
     private List<Livro> livros = new ArrayList<>();

@@ -1,15 +1,22 @@
 package br.edu.infnet.gustavo_figueiredo_api.model;
 
 import com.fasterxml.jackson.annotation.*;
+import io.swagger.v3.oas.annotations.media.*;
 
 import java.util.*;
 
 public class Livro implements Entidade {
+    @Schema(description = "ID do livro", example = "1")
     private Integer id;
+    @Schema(description = "Título do livro", example = "Dom Casmurro")
     private String titulo;
+    @Schema(description = "ISBN do livro", example = "978-8535905571")
     private String isbn;
+    @Schema(description = "Autor associado ao livro", implementation = Autor.class)
     private Autor autor;
+    @Schema(description = "Categoria associada ao livro", implementation = Categoria.class)
     private Categoria categoria;
+    @Schema(description = "Editora associada ao livro", implementation = Editora.class)
     private Editora editora;
     @JsonIgnore
     private final List<Exemplar> exemplares = new ArrayList<>();

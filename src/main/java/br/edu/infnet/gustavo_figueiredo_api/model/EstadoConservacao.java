@@ -1,5 +1,8 @@
 package br.edu.infnet.gustavo_figueiredo_api.model;
 
+import io.swagger.v3.oas.annotations.media.*;
+
+@Schema(description = "Estado de conservação do exemplar: EXCELENTE, BOM ou REGULAR.")
 public enum EstadoConservacao {
     EXCELENTE("Excelente"), BOM("Bom"), REGULAR("Regular");
 

@@ -17,12 +17,8 @@ public class ApiExceptionHandler {
         return construirResposta(HttpStatus.NOT_FOUND, ex.getMessage(), request.getRequestURI());
     }
 
-    @ExceptionHandler({
-            DadosInvalidosException.class,
-            MethodArgumentTypeMismatchException.class,
-            HttpMessageNotReadableException.class,
-            MissingPathVariableException.class
-    })
+    @ExceptionHandler({DadosInvalidosException.class, MethodArgumentTypeMismatchException.class,
+            HttpMessageNotReadableException.class, MissingPathVariableException.class})
     public ResponseEntity<ErroResposta> handleBadRequest (Exception ex, HttpServletRequest request) {
         return construirResposta(HttpStatus.BAD_REQUEST, ex.getMessage(), request.getRequestURI());
     }

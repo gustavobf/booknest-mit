@@ -9,8 +9,7 @@ public class OpenApiConfig {
 
     @Bean
     public OpenAPI bibliotecaOpenAPI () {
-        return new OpenAPI().info(new Info().title("Biblioteca API")
-                .description("API REST da biblioteca")
-                .version("v1"));
+        return new OpenAPI().info(
+                new Info().title("Biblioteca API").description("API REST da biblioteca").version("v1"));
     }
 }

@@ -51,6 +51,17 @@ public class EmprestimoService extends BaseService<Emprestimo> {
         return obterLista().stream().filter(Emprestimo::estaAtrasado).toList();
     }
 
+    public List<Emprestimo> listarNaoAtrasados () {
+        return obterLista().stream().filter(emprestimo -> !emprestimo.estaAtrasado()).toList();
+    }
+
+    public List<Emprestimo> listarPorSituacaoAtraso (Boolean atrasado) {
+        if (atrasado == null) {
+            return obterLista();
+        }
+        return atrasado ? listarAtrasados() : listarNaoAtrasados();
+    }
+
     public List<Emprestimo> listarPorUsuario (Integer idUsuario) {
         return obterLista().stream()
                 .filter(emprestimo -> emprestimo.getUsuario() != null && emprestimo.getUsuario().getId()

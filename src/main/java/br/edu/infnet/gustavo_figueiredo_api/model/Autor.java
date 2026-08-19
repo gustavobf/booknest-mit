@@ -1,13 +1,18 @@
 package br.edu.infnet.gustavo_figueiredo_api.model;
 
 import com.fasterxml.jackson.annotation.*;
+import io.swagger.v3.oas.annotations.media.*;
 
 import java.util.*;
 
 public class Autor implements Entidade {
+    @Schema(description = "ID do autor", example = "1")
     private Integer id;
+    @Schema(description = "Nome completo do autor", example = "Machado de Assis")
     private String nome;
+    @Schema(description = "Nacionalidade do autor", example = "Brasileiro")
     private String nacionalidade;
+    @Schema(description = "Ano de nascimento do autor", example = "1839")
     private Integer anoNascimento;
     @JsonIgnore
     private List<Livro> livros = new ArrayList<>();

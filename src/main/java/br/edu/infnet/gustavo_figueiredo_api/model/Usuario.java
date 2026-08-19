@@ -1,14 +1,20 @@
 package br.edu.infnet.gustavo_figueiredo_api.model;
 
 import com.fasterxml.jackson.annotation.*;
+import io.swagger.v3.oas.annotations.media.*;
 
 import java.util.*;
 
 public class Usuario implements Entidade {
+    @Schema(description = "ID do usuário", example = "1")
     private Integer id;
+    @Schema(description = "Nome do usuário", example = "João Silva")
     private String nome;
+    @Schema(description = "E-mail do usuário", example = "joao.silva@biblioteca.com")
     private String email;
+    @Schema(description = "Matrícula do usuário", example = "MAT2025001")
     private String matricula;
+    @Schema(description = "Indica se o usuário está ativo", example = "true")
     private Boolean ativo;
     @JsonIgnore
     private final List<Emprestimo> emprestimos = new ArrayList<>();

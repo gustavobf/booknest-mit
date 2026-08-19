@@ -1,14 +1,20 @@
 package br.edu.infnet.gustavo_figueiredo_api.model;
 
 import com.fasterxml.jackson.annotation.*;
+import io.swagger.v3.oas.annotations.media.*;
 
 import java.util.*;
 
 public class Exemplar implements Entidade {
+    @Schema(description = "ID do exemplar", example = "1")
     private Integer id;
+    @Schema(description = "Código interno do exemplar", example = "DOM-001")
     private String codigo;
+    @Schema(description = "Estado de conservação do exemplar", example = "BOM")
     private EstadoConservacao estadoConservacao;
+    @Schema(description = "Disponibilidade atual do exemplar", example = "true")
     private Boolean disponivel;
+    @Schema(description = "Livro associado ao exemplar", implementation = Livro.class)
     private Livro livro;
     @JsonIgnore
     private final List<Emprestimo> emprestimos = new ArrayList<>();

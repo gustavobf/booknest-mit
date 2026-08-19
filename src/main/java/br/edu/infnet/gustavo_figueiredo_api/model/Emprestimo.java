@@ -1,14 +1,23 @@
 package br.edu.infnet.gustavo_figueiredo_api.model;
 
+import io.swagger.v3.oas.annotations.media.*;
+
 import java.time.*;
 
 public class Emprestimo implements Entidade {
+    @Schema(description = "ID do empréstimo", example = "1")
     private Integer id;
+    @Schema(description = "Usuário que realizou o empréstimo", implementation = Usuario.class)
     private Usuario usuario;
+    @Schema(description = "Data de início do empréstimo", example = "2025-06-05")
     private LocalDate dataEmprestimo;
+    @Schema(description = "Data prevista para devolução", example = "2025-06-20")
     private LocalDate dataEsperadaDevolucao;
+    @Schema(description = "Data de devolução efetiva", example = "2025-06-22")
     private LocalDate dataDevolucao;
+    @Schema(description = "Valor da multa", example = "5.50")
     private Double multa;
+    @Schema(description = "Exemplar emprestado", implementation = Exemplar.class)
     private Exemplar exemplar;
 
     public Emprestimo () {

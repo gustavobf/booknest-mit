@@ -46,6 +46,17 @@ public class ExemplarService extends BaseService<Exemplar> {
         return obterLista().stream().filter(exemplar -> Boolean.TRUE.equals(exemplar.getDisponivel())).toList();
     }
 
+    public List<Exemplar> listarIndisponiveis () {
+        return obterLista().stream().filter(exemplar -> Boolean.FALSE.equals(exemplar.getDisponivel())).toList();
+    }
+
+    public List<Exemplar> listarPorDisponibilidade (Boolean disponivel) {
+        if (disponivel == null) {
+            return obterLista();
+        }
+        return disponivel ? listarDisponiveis() : listarIndisponiveis();
+    }
+
     public List<Exemplar> listarPorLivro (Integer idLivro) {
         return obterLista().stream()
                 .filter(exemplar -> exemplar.getLivro() != null && exemplar.getLivro().getId().equals(idLivro))
